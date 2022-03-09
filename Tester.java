@@ -6,13 +6,22 @@ import java.util.Random;
  */
 public class Tester {
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) throws Exception {
 
-    int nativeRatio = 4;
-    int mqttRatio = 12;
+    int nativeRatio = 3;
+    int mqttRatio = 1;
+
+    if (nativeRatio < 0 || mqttRatio < 0) {
+      throw new Exception("Distribution ratios must be positive integers");
+    }
 
     var nativeThreshold = nativeRatio;
     var mqttThreshold = mqttRatio + nativeRatio;
+
+    if (mqttThreshold == 0) {
+      System.out.println("Set distribution ratios to integer values greater than 0 for tests to run.");
+      return;
+    }
 
     var randr = new Random(Instant.now().getNano());
 
@@ -33,7 +42,7 @@ public class Tester {
       }
     }
 
-    System.out.println("Native sum: "+nativeSum+". Mqtt sum: "+mqttSum);
+    System.out.println("Native sum: " + nativeSum + ". Mqtt sum: " + mqttSum);
 
   }
 }
